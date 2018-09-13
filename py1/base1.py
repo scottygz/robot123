@@ -131,12 +131,9 @@ if __name__ == '__main__':
         
         ret,thresh = cv2.threshold(gray,127,255,0)
         if '3.4.2' == cv2_version :
-            contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-            cv2.drawContours(gray, contours, -1, (0,255,0), 3)
-        
-        else:
-            contours, hierarchy, more = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-            cv2.drawContours(gray, contours, -1, (0,255,0), 3)
+            returnv = list( cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE) )
+            contours = returnv[0]
+            #cv2.drawContours(gray, contours, -1, (0,255,0), 3)
         cv2.imshow('Contours', gray)
         
         
