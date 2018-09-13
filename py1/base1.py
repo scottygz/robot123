@@ -6,6 +6,7 @@ import random
 import abc
 import cv2
 import numpy as np
+import platform
 #from matplotlib import pyplot as plt
 
 def bitOn(bits: int , index: int) -> bool : 
@@ -82,6 +83,7 @@ def openCamera():
     pass
 
 def main(args):
+    print("OS Version:", platform.release() )
     print("Starting... ", time.clock())
     qC1 = queue.Queue()
     qF1 = queue.Queue()
@@ -114,7 +116,7 @@ if __name__ == '__main__':
     bits = 0xA355
     for i in range(16):
         print( i, bits, bitOn(bits, i))
-       
+    cv2_version = cv2.__version__
     print ("OpenCV version:", cv2.__version__)
     cap = cv2.VideoCapture(0)
     
@@ -128,8 +130,13 @@ if __name__ == '__main__':
         cv2.imshow('Edges', edges)
         
         ret,thresh = cv2.threshold(gray,127,255,0)
-        contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(gray, contours, -1, (0,255,0), 3)
+        if '3.4.2' == cv2_version :
+            contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+            cv2.drawContours(gray, contours, -1, (0,255,0), 3)
+        
+        else:
+            contours, hierarchy, more = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+            cv2.drawContours(gray, contours, -1, (0,255,0), 3)
         cv2.imshow('Contours', gray)
         
         
